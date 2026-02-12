@@ -15,10 +15,7 @@
 | BP | Pressão arterial em repouso (mm Hg) |
 | Cholesterol | Nível de colesterol sérico (mg/dL)|
 |  FBS over 120 | Glicemia em jejum > 120 mg/dL (1 = Verdadeiro, 0 = Falso) |
-| EKG results| 
-Resultados do eletrocardiograma em repouso:
-0 = Normal
-1 = Anormalidade da onda ST-T
+| EKG results| Resultados do eletrocardiograma em repouso: 0 = Normal 1 = Anormalidade da onda ST-T
 2 = Hipertrofia ventricular esquerda|
 | Max HR| Frequência cardíaca máxima alcançada|
 | Exercise angina | Angina induzida por exercício (1 = Sim, 0 = Não)|
@@ -26,9 +23,9 @@ Resultados do eletrocardiograma em repouso:
 |  Slope of ST| Inclinação do segmento ST no pico do exercício|
 |  Number of vessels fluro	| Número de vasos principais (0–3) visualizados por fluoroscopia |
 | Thallium | Resultado do teste de esforço com tálio (indicador médico categórico) |
-| Heart Disease| Variável alvo:
-Presença = Doença cardíaca detectada
-Ausência = Sem doença cardíaca |
+| Heart Disease| Variável alvo: Presença = Doença cardíaca detectada - Ausência = Sem doença cardíaca |
+
+
 
 ---
 ### Objetivo do projeto

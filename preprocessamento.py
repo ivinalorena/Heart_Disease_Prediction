@@ -17,3 +17,43 @@ RANDOM_STATE = 42
 N_FOLDS = 5
 
 print(f"Using device: {DEVICE}")
+
+train = pd.read_csv("C:\\Users\\Ivina\\Desktop\\heartDisease\data\\train.csv")
+test = pd.read_csv("C:\\Users\\Ivina\\Desktop\\heartDisease\\data\\test.csv")
+original = pd.read_csv("C:\Users\Ivina\Desktop\heartDisease\data\Heart_Disease_Prediction.csv") 
+
+le = LabelEncoder()
+train['Heart Disease'] = le.fit_transform(train['Heart Disease'])
+original['Heart Disease'] = le.fit_transform(original['Heart Disease'])
+
+base_features = [col for col in train.columns if col not in ['Heart Disease', 'id']] 
+
+def add_engineered_features(df):
+    df_temp = df.copy()
+    
+    for col in base_features: 
+        if col in original.columns:
+           
+            stats = original.groupby(col)['Heart Disease'].agg(['mean', 'median', 'std', 'skew', 'count']).reset_index()
+         
+            stats.columns = [col] + [f"orig_{col}_{s}" for s in ['mean', 'median', 'std', 'skew', 'count']]
+     
+            df_temp = df_temp.merge(stats, on=col, how='left') 
+ 
+            fill_values = {
+                f"orig_{col}_mean": original['Heart Disease'].mean(),
+                f"orig_{col}_median": original['Heart Disease'].median(),
+                f"orig_{col}_std": 0,
+                f"orig_{col}_skew": 0,
+                f"orig_{col}_count": 0
+            }
+            df_temp = df_temp.fillna(value=fill_values)
+            
+    return df_temp
+
+train = add_engineered_features(train)
+test = add_engineered_features(test) 
+
+X = train.drop(['id', 'Heart Disease'], axis=1)
+y = train['Heart Disease']
+X_test = test.drop(['id'], axis=1)

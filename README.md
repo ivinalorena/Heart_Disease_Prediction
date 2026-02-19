@@ -8,7 +8,7 @@
 ---
 ### Descrição das colunas:
 | Column Name | Descrição |
-| :--- | :---: |
+| :---: | :---: |
 | Age| Idade do paciente (em anos) |
 | Sex | Gênero do paciente (1 = Male, 0 = Female) |
 |  Chest pain type| Tipo de dor no peito: 1 = Angina típica (Typical angina) 2 = Angina atípica (Atypical angina) 3 = Dor não anginosa  (Non-anginal pain) = Assintomática (Asymptomatic) |

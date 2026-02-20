@@ -18,9 +18,9 @@ N_FOLDS = 5
 
 print(f"Using device: {DEVICE}")
 
-train = pd.read_csv("train.csv")
-test = pd.read_csv("test.csv")
-original = pd.read_csv("Heart_Disease_Prediction.csv") 
+train = pd.read_csv("C:\\Users\\Ivina\\Desktop\\heartDisease\\data\\train.csv")
+test = pd.read_csv("C:\\Users\\Ivina\\Desktop\\heartDisease\\data\\test.csv")
+original = pd.read_csv("C:\\Users\\Ivina\\Desktop\\heartDisease\\data\\Heart_Disease_Prediction.csv") 
 
 le = LabelEncoder() # classe utilitaria usada para converter texto categórico ou rótulos não numéricos em números inteiros
 train['Heart Disease'] = le.fit_transform(train['Heart Disease'])
@@ -63,7 +63,25 @@ test = add_engineered_features(test)
 X = train.drop(['id', 'Heart Disease'], axis=1)
 y = train['Heart Disease']
 X_test = test.drop(['id'], axis=1)
+def check_data_quality(df, name="Dataset"):
+    print(f"--- Data Quality: {name} ---")
+    print(f"Total Rows: {len(df)}")
 
+    cols_to_check = [c for c in df.columns if c != 'id']
+    dupes = df.duplicated(subset=cols_to_check).sum()
+
+    nan_counts = df.isnull().sum()
+    total_nans = nan_counts.sum()
+    
+    print(f"Duplicate Rows (excl. ID): {dupes}")
+    print(f"Total NaN values: {total_nans}")
+    if total_nans > 0:
+        print("\nColumns with NaNs:")
+        print(nan_counts[nan_counts > 0])
+    print("-" * 30)
+
+check_data_quality(train, "Train")
+check_data_quality(test, "Test")
 """ 
 X: features de treino (remove 'id' e a variável alvo)
 y: variável alvo (Heart Disease)

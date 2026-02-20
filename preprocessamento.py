@@ -8,6 +8,7 @@ from sklearn.metrics import roc_auc_score
 from pytabkit import RealMLP_TD_Classifier # Jupyter com informações sobre o realmlp
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.calibration import CalibrationDisplay
 
 warnings.filterwarnings('ignore')
 
@@ -63,6 +64,8 @@ test = add_engineered_features(test)
 X = train.drop(['id', 'Heart Disease'], axis=1)
 y = train['Heart Disease']
 X_test = test.drop(['id'], axis=1)
+
+
 def check_data_quality(df, name="Dataset"):
     print(f"--- Data Quality: {name} ---")
     print(f"Total Rows: {len(df)}")
@@ -87,9 +90,50 @@ X: features de treino (remove 'id' e a variável alvo)
 y: variável alvo (Heart Disease)
 X_test: features de teste (apenas remove 'id') """
 
+def analyze_uniqueness(df):
+    unique_stats = []
+    for col in df.columns:
+        if col == 'id': continue
+        
+        n_unique = df[col].nunique()
+        dtype = df[col].dtype
+
+        category_guess = "Categorical/Ordinal" if n_unique < 25 else "Continuous"
+        
+        unique_stats.append({
+            'Feature': col,
+            'Unique Values': n_unique,
+            'Data Type': dtype,
+            'Heuristic Type': category_guess
+        })
+    
+    return pd.DataFrame(unique_stats).sort_values(by='Unique Values')
+
+uniqueness_df = analyze_uniqueness(train)
+print(uniqueness_df)
+
+numeric_cols = X.select_dtypes(include=[np.number]).columns.tolist()
+
+skew_series = X[numeric_cols].skew().abs().sort_values(ascending=False)
+top_skewed_features = skew_series.head(6).index.tolist()
+
+print("Top 6 Most Skewed Features (Absolute Values):")
+print(X[top_skewed_features].skew())
+
+plt.figure(figsize=(16, 10))
+for i, col in enumerate(top_skewed_features):
+    plt.subplot(2, 3, i + 1) 
+    sns.histplot(X[col].sample(min(10000, len(X))), kde=True, color='teal', bins=30)
+    plt.title(f"Feature: {col}\nSkewness: {X[col].skew():.2f}")
+    plt.xlabel("")
+    plt.ylabel("Frequency")
+
+plt.tight_layout()
+plt.savefig('skewed_distributions.png')
+
 param_grid = {
-        'device': 'cuda',
-        'random_state': 42,
+        'device': DEVICE,
+        'random_state': RANDOM_STATE,
         'verbosity': 2,
         'n_epochs': 100,
         'batch_size': 128, 
@@ -149,3 +193,33 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(X, y)):
 
     if DEVICE == 'cuda':
         torch.cuda.empty_cache()
+
+plt.figure(figsize=(12, 5)) 
+plt.suptitle('RealMLP', fontsize=20) 
+
+ax1 = plt.subplot(1, 2, 1)
+CalibrationDisplay.from_predictions(y, oof_preds, n_bins=100, strategy='quantile', ax=ax1)
+ax1.set_title('Calibration Curve')
+
+ax2 = plt.subplot(1, 2, 2)
+ax2.hist(oof_preds, bins=100, edgecolor='black', alpha=0.7)
+ax2.set_title('Prediction Distribution (Histogram)')
+ax2.set_xlabel('Predicted Probability')
+ax2.set_ylabel('Count')
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95]) 
+plt.show()
+
+
+total_oof_score = roc_auc_score(y, oof_preds) 
+
+print("\n" + "="*40)
+print(f"Overall OOF ROC-AUC: {total_oof_score:.5f}")
+print(f"Mean Fold Score: {np.mean(fold_scores):.5f} (+/- {np.std(fold_scores):.5f})")
+print("="*40)
+
+pd.DataFrame({'id': train['id'], 'Heart Disease_prob': oof_preds}).to_csv('oof.csv', index=False)
+
+submission = pd.DataFrame({'id': test['id'], 'Heart Disease': test_preds})
+submission.to_csv('submission.csv', index=False)
+submission.head() 

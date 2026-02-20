@@ -1,5 +1,15 @@
 import streamlit as st
 
+btn1,btn2 = st.columns(2, gap="medium",border=False, width=400,vertical_alignment='bottom')
+with btn1:
+    if st.button("Página inicial"):
+        st.switch_page("main.py")
+
+with btn2:
+    if st.button("Modelo RealMLP"):
+        st.switch_page("pages/PAGEMLP.py")
+st.divider()
+
 st.markdown("# Modelo escolhido: RealMLP")
 st.markdown("""### Informações relevantes sobre o modelo escolhido no app atual: **RealMLP**
 Real valued Multi-Layer Perceptron - é um modelo de deep learning avançado, projetado para superar o Gradiente Boosted Decision Trees (XGBoost - CatBoost - LightGBM) em dados tabulares.

@@ -1,14 +1,13 @@
 import streamlit as st
 import pandas as pd
 # https://www.kaggle.com/datasets/cdeotte/s6e4-original-dataset
-# 
+
 df = pd.read_csv('data/Heart_Disease_Prediction.csv').head()
 # app princial
 #if home_page:
 st.header("Predição - Doença do coração")
 st.markdown("""
-            ### App desenvolvido para:
-            - Analisar e prever a presença de doença cardíaca.
+            ### App desenvolvido para analisar e prever a presença de doença cardíaca.
             ### Estrutura: 
             - Estrutura tabular: cada linha representa um paciente e cada coluna uma medida médica ou indicador de diagnóstico.
             """)
@@ -54,7 +53,7 @@ col1, col2 = st.columns(2)
 with col1:
     realMLP = st.button("⚛ RealMLP", key='RealMLP',type='secondary')
 with col2:
-    model_LSTM = st.button("⚛  LSTM",key='LSTM_btn', type='secondary')
+    model_LSTM = st.button("⚛ LSTM",key='LSTM_btn', type='secondary')
 
 if realMLP:
     st.switch_page("pages/PAGEMLP.py")

@@ -11,9 +11,9 @@ with btn2:
 st.divider()
 
 st.markdown("# Modelo escolhido: RealMLP")
-st.markdown("""### Informações relevantes sobre o modelo escolhido no app atual: **RealMLP**
-Real valued Multi-Layer Perceptron - é um modelo de deep learning avançado, projetado para superar o Gradiente Boosted Decision Trees (XGBoost - CatBoost - LightGBM) em dados tabulares.
-- é um conjunto otimizado de técnicas aplicado a um perceptron multicamadas simples.
-- é um algoritmo de aprendizado supervisionado que aprende uma função *f:R^m -> R^0* treinando em um conjunto de dados, onde o m é o número de dimensões para entrada e é o O número de dimensões para saída.
-- Dado um conjunto de características X = {x1,x2,...,xm} e um alvo y, ele pode aprender um aproximador de função não linear para classificação ou regressão.
-- É diferente da regressão logística, pois entre a camada de entrada e a de saída, pode haver uma ou mais camadas não lineares, chamadas camadas ocultas. """) #,height=200, key="system_prompt")
+st.markdown("""###  Informações relevantes sobre o modelo escolhido na aba atual: 
+            As redes Long Short-Term Memory (LSTMs) constituem uma classe de Redes Neurais Recorrentes (RNNs) capazes de capturar e aprender dependências temporais de longo alcance. 
+            fundamentam-se em células de memória e um conjunto de mecanismos de controle, denominados 'gates', que regulam o fluxo de informação. Através dos gates de entrada, 
+            esquecimento e saída, a LSTM adquire a capacidade de selecionar quais informações devem ser armazenadas, atualizadas ou descartadas ao longo do tempo. Este controle 
+            seletivo permite a retenção de dependências temporais prolongadas, tornando a LSTM uma arquitetura de rede neural recorrente particularmente adequada para tarefas como 
+            processamento de linguagem natural, previsão de séries temporais e reconhecimento de padrões em dados sequenciais.""")

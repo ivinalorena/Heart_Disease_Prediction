@@ -18,5 +18,5 @@ As redes Long Short-Term Memory (LSTMs) constituem uma classe de Redes Neurais R
 esquecimento e saída, a LSTM adquire a capacidade de selecionar quais informações devem ser armazenadas, atualizadas ou descartadas ao longo do tempo. Este controle 
 seletivo permite a retenção de dependências temporais prolongadas, tornando a LSTM uma arquitetura de rede neural recorrente particularmente 
 - Adequada para tarefas como: 
-    - processamento de linguagem natural, 
-    - previsão de séries temporais e reconhecimento de padrões em dados sequenciais.""")
+    - Processamento de linguagem natural 
+    - Previsão de séries temporais e reconhecimento de padrões em dados sequenciais.""")

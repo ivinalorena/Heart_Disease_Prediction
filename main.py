@@ -2,23 +2,31 @@ import streamlit as st
 import pandas as pd
 # https://www.kaggle.com/datasets/cdeotte/s6e4-original-dataset
 
+st.set_page_config(page_title='HeartD Prediction',layout='wide')
+
 df = pd.read_csv('data/Heart_Disease_Prediction.csv').head()
 # app princial
 #if home_page:
-st.header("Predição - Doença do coração")
-st.markdown("""
-            ### App desenvolvido para analisar e prever a presença de doença cardíaca.
-            ### Estrutura: 
-            - Estrutura tabular: cada linha representa um paciente e cada coluna uma medida médica ou indicador de diagnóstico.
-            """)
+leftside,rightside = st.columns(2,gap='large',vertical_alignment = 'center')
+with leftside:
+    st.header("Predição - Doença do coração")
+    st.markdown("""
+                ### App desenvolvido para analisar e prever a presença de doença cardíaca.
+                ### Estrutura: 
+                - Estrutura tabular: cada linha representa um paciente e cada coluna uma medida médica ou indicador de diagnóstico.
+                """)
+with rightside:
+    st.image('images/paginainicial.svg')
 
-with st.expander("Informações gerais do dataset"):
+with st.expander("Exemplo geral do dataset"):
     st.write("Estrutura geral: ")
     st.dataframe(df)
-    #st.divider()
+    
+    st.divider()
+    st.write('Descrição de cada característica')
     #st.write("Infos de cada coluna: ")
-    c1,c2,c3,c4,c5,c6,c7 = st.tabs(["Age","Sex","Chest pain type","BP","Cholesterol","FBS over 120","EKG results"])
-    c8,c9,c10,c11,c12,c13,c14 = st.tabs(["Max HR","Exercise angina","ST depression","Slope of ST","Number of vessels fluro","Thallium","Heart Disease"])
+    c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14 = st.tabs(["Age","Sex","Chest pain type","BP","Cholesterol","FBS over 120","EKG results", "Max HR","Exercise angina","ST depression","Slope of ST","Number of vessels fluro","Thallium","Heart Disease"])
+    #c8,c9,c10,c11,c12,c13,c14 = st.tabs(["Max HR","Exercise angina","ST depression","Slope of ST","Number of vessels fluro","Thallium","Heart Disease"])
     with c1:
         st.write("Idade dos pacientes")
     with c2:
@@ -46,7 +54,7 @@ with st.expander("Informações gerais do dataset"):
     with c13:
         st.write("Resultado do teste de esforço com tálio (indicador médico categórico)")
     with c14:
-        st.write("Variável alvo: Presença = Doença cardíaca detectada - Ausência = Sem doença cardíaca")
+        st.write("Variável alvo: Presença = Doença cardíaca detectada | Ausência = Sem doença cardíaca")
 
 st.subheader("Selecione o modelo:")
 col1, col2 = st.columns(2) 

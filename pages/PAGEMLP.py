@@ -20,13 +20,13 @@ Real valued Multi-Layer Perceptron - é um modelo de deep learning avançado, pr
 
 with st.form(key='form_MLP', border=True):
     nome = st.text_input('Nome')
-    idade = st.number_input('Idade',format='%d',max_value=100,value=None)
     file = st.file_uploader('Insira os dados do paciente',accept_multiple_files=False,type="csv")
-    
+
     if file is not None: 
         st.dataframe(file)
 
-    if nome or idade or file is None:
+    if nome or file is None:
         st.warning('Complete o cadastro')
+        
     st.form_submit_button('Cadastrar')
 

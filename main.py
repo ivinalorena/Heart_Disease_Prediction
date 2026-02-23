@@ -4,7 +4,7 @@ import pandas as pd
 
 st.set_page_config(page_title='HeartD Prediction',layout='wide')
 
-df = pd.read_csv('data/Heart_Disease_Prediction.csv').head()
+df = pd.read_csv('data/Heart_Disease_Prediction.csv', header=0).head(1)
 # app princial
 #if home_page:
 leftside,rightside = st.columns(2,gap='large',vertical_alignment = 'center')
@@ -19,8 +19,8 @@ with rightside:
     st.image('images/paginainicial.svg')
 
 with st.expander("Exemplo geral do dataset"):
-    st.write("Estrutura geral: ")
-    st.dataframe(df)
+    st.write("Estrutura geral: (Exemplo) ")
+    st.dataframe(df,hide_index=True)
     
     st.divider()
     st.write('Descrição de cada característica')
@@ -54,10 +54,10 @@ with st.expander("Exemplo geral do dataset"):
     with c13:
         st.write("Resultado do teste de esforço com tálio (indicador médico categórico)")
     with c14:
-        st.write("Variável alvo: Presença = Doença cardíaca detectada | Ausência = Sem doença cardíaca")
+        st.write("Variável alvo: Presença = Doença cardíaca detectada | Ausência = Sem doença cardíaca -- **Não necessário preencher, pois é o resultado do modelo**")
 
 st.subheader("Selecione o modelo:")
-col1, col2 = st.columns(2) 
+col1, col2,col3,col4= st.columns(4, gap="medium", vertical_alignment='center') 
 with col1:
     realMLP = st.button("⚛ RealMLP", key='RealMLP',type='secondary')
 with col2:

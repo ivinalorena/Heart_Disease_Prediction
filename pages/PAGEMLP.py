@@ -1,4 +1,7 @@
 import streamlit as st
+import time
+import pandas as pd
+from Controllers import paciente_controller as pac_con
 
 btn1,btn2 = st.columns(2, gap="medium",border=False, width=400,vertical_alignment='bottom')
 with btn1:
@@ -19,14 +22,48 @@ Real valued Multi-Layer Perceptron - é um modelo de deep learning avançado, pr
 - É diferente da regressão logística, pois entre a camada de entrada e a de saída, pode haver uma ou mais camadas não lineares, chamadas camadas ocultas. """) #,height=200, key="system_prompt")
 
 with st.form(key='form_MLP', border=True):
+    st.subheader("Cadastro de paciente para análise")
     nome = st.text_input('Nome')
-    file = st.file_uploader('Insira os dados do paciente',accept_multiple_files=False,type="csv")
+    arquivo = st.file_uploader('Insira os dados do paciente', accept_multiple_files=False, type="csv")
 
-    if file is not None: 
-        st.dataframe(file)
+    df = None
+    if arquivo is not None:
+        df = pd.read_csv(arquivo,header=0,index_col=False)
+        df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
+        st.dataframe(df)
 
-    if nome or file is None:
-        st.warning('Complete o cadastro')
-        
-    st.form_submit_button('Cadastrar')
+    if st.form_submit_button('Cadastrar'):
+        if not nome or df is None:
+            st.warning('Complete o cadastro')
+        else:
+            if "age" not in df.columns or "sex" not in df.columns:
+                st.error("O CSV precisa ter as colunas: Age e Sex")
+            else:
+                idade = int(df.iloc[0]["age"])
+                sex_val = int(df.iloc[0]["sex"])
+                sexo = "Homem" if sex_val == 1 else "Mulher" if sex_val == 0 else "Não informado"
+
+                # Ajuste este valor quando tiver o resultado do modelo
+                resultado = "Pendente"
+
+                pac_con.db_insert(nome, idade, sexo, resultado)
+                with st.spinner("Cadastrando..."):
+                    time.sleep(2)
+                st.success("Paciente cadastrado com sucesso!")
+                time.sleep(2)
+                st.rerun()
+
+
+
+with st.container(border=True):
+    st.subheader("Pacientes cadastrados")
+    pacientes = pac_con.selecionar_todos()
+    st.dataframe([p.to_dict() for p in pacientes])
+    if pacientes:
+        ids = [p.id for p in pacientes]
+        id_to_delete = st.selectbox("Selecione o ID do paciente para excluir", ids)
+        if st.button("Excluir paciente"):
+            pac_con.excluir(id_to_delete)
+            st.success(f"Paciente com ID {id_to_delete} excluído com sucesso!")
+            st.rerun()
 

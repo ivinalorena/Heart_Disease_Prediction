@@ -10,7 +10,7 @@ with btn2:
         st.switch_page("pages/PAGEMLP.py")
 st.divider()
 
-st.markdown("# Modelo escolhido: RealMLP")
+st.markdown("# Modelo escolhido: LSTM")
 st.markdown("""###  Informações relevantes sobre o modelo escolhido na aba atual: 
 As redes Long Short-Term Memory (LSTMs) constituem uma classe de Redes Neurais Recorrentes (RNNs) capazes de capturar e aprender dependências temporais de longo alcance. 
             

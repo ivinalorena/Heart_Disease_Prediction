@@ -19,7 +19,6 @@ EXPECTED_FEATURES = [
     "Slope of ST", "Number of vessels fluro", "Thallium"
 ]
 
-
 def _normalize(col_name: str) -> str:
     return col_name.strip().lower().replace(" ", "_")
 

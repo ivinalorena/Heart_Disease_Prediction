@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.set_page_config(page_title="Modelo LSTM", layout="centered")
+
 btn1,btn2 = st.columns(2, gap="medium",border=False, width=400,vertical_alignment='bottom')
 with btn1:
     if st.button("Página inicial"):

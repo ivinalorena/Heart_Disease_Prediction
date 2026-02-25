@@ -8,6 +8,8 @@ from datetime import datetime
 from sklearn.preprocessing import LabelEncoder
 from Controllers import paciente_controller as pac_con
 
+st.set_page_config(page_title="Modelo RealMLP", layout="centered")
+
 os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
 
 MODEL_PATH = Path("realmlp_td_classifier_model.pkl")
